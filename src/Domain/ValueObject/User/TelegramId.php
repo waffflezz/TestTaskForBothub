@@ -8,7 +8,7 @@ class TelegramId
         private string $telegramId
     ){}
 
-    public function getTelegramId(): string
+    public function getValue(): string
     {
         return $this->telegramId;
     }

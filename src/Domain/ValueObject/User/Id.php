@@ -8,7 +8,7 @@ class Id
         private int $id
     ){}
 
-    public function getId(): int
+    public function getValue(): int
     {
         return $this->id;
     }

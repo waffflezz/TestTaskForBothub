@@ -16,3 +16,11 @@ services:
       - "8000:80"
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: telegram_bot
+    ports:
+      - "3306:3306"

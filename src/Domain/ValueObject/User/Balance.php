@@ -32,10 +32,50 @@ final class Balance
         return ['dollar' => $this->dollar, 'cent' => $this->cent];
     }
 
-    private function assertPriceIsValid(int $cent): void
+    private function assertPriceIsValid(int $dollar, int $cent): void
     {
+        if ($dollar < 0) {
+            throw new Exception('dollar must be greater than 0');
+        }
+
         if ($cent > 99) {
             throw new Exception("Cent bigger than 99");
         }
+    }
+
+    public function add(Balance $other): Balance
+    {
+        $centSum = $this->cent + $other->cent;
+        $newCent = $centSum % 100;
+        $newDollar = $this->dollar + $other->dollar + intdiv($centSum, 100);
+
+        return new Balance($newDollar, $newCent);
+    }
+
+    public function subtract(Balance $other): Balance
+    {
+        if ($this->dollar < $other->dollar) {
+            throw new Exception("Balance can't be less than 0");
+        }
+
+        if ($this->dollar === $other->dollar && $this->cent < $other->cent) {
+            throw new Exception("Balance can't be less than 0");
+        }
+
+        if ($this->cent < $other->cent) {
+            $newCent = 100 - ($other->cent - $this->cent);
+            $newDollar = $this->dollar - $other->dollar - 1;
+        } else {
+            $newCent = $this->cent - $other->cent;
+            $newDollar = $this->dollar - $other->dollar;
+        }
+
+        return new Balance($newDollar, $newCent);
+    }
+
+    public function print(): string
+    {
+        $centForPrint = $this->cent < 10 ? '0' . $this->cent : $this->cent;
+        return "\$$this->dollar.$centForPrint";
     }
 }
