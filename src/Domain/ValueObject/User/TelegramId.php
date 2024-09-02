@@ -5,10 +5,10 @@ namespace App\Domain\ValueObject\User;
 class TelegramId
 {
     public function __construct(
-        private string $telegramId
+        private int $telegramId
     ){}
 
-    public function getValue(): string
+    public function getValue(): int
     {
         return $this->telegramId;
     }

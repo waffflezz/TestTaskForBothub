@@ -5,9 +5,9 @@ namespace App\Presentation\Repository\User;
 use App\Domain\Entity\User;
 use App\Domain\Repository\User\UserRepositoryInterface;
 use App\Domain\ValueObject\User\TelegramId;
-use App\Domain\ValueObject\User\Id;
 use App\Domain\ValueObject\User\Balance;
 use PDO;
+use TelegramBot\Api\Exception;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -26,6 +26,9 @@ class UserRepository implements UserRepositoryInterface
         ]);
     }
 
+    /**
+     * @throws Exception
+     */
     public function getByTelegramId(TelegramId $id): ?User
     {
         $sql = "SELECT * FROM users WHERE telegram_id = :telegram_id";

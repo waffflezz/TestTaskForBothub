@@ -14,6 +14,9 @@ class UserUseCase
         private UserRepositoryInterface $userRepository
     ){}
 
+    /**
+     * @throws Exception
+     */
     public function createUser(TelegramId $telegramId): User
     {
         $user = $this->userRepository->getByTelegramId($telegramId);
@@ -32,6 +35,10 @@ class UserUseCase
     {
         $user = $this->userRepository->getByTelegramId($telegramId);
 
+        if (is_null($user)) {
+            throw new Exception("user not found");
+        }
+
         [$dollar, $cent] = array_map('intval', explode('.', $amount));
 
         $balance = new Balance(abs($dollar), $cent);
@@ -43,8 +50,9 @@ class UserUseCase
 
         $this->userRepository->save($user);
 
-        $centForPrint = $balance->getCent() < 10 ? '0' . $balance->getCent() : $balance->getCent();
+        $newUserBalance = $user->getBalance();
+        $centForPrint = $newUserBalance->getCent() < 10 ? '0' . $newUserBalance->getCent() : $newUserBalance->getCent();
 
-        return "Your current balance is \${$balance->getDollar()}.$centForPrint";
+        return "Your current balance is \${$newUserBalance->getDollar()}.$centForPrint";
     }
 }

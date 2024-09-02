@@ -24,3 +24,5 @@ services:
       MYSQL_DATABASE: telegram_bot
     ports:
       - "3306:3306"
+    volumes:
+      - ./db/mysql:/var/lib/mysql
